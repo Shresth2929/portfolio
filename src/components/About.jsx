@@ -159,10 +159,10 @@ const About = () => {
               <span style={{ color: "#7c3aed" }}>Problem Solver.</span>
             </h2>
             <p style={{ fontSize: "15px", color: "#9ca3af", lineHeight: "1.9", marginBottom: "16px" }}>
-              Hey! I'm <span style={{ color: "#fff", fontWeight: "600" }}>Shresth Veer Singh</span> — a Computer Science Engineering student at Lovely Professional University with a CGPA of 8.04. I specialize in building full-stack web applications using the MERN stack.
+              Hey! I'm <span style={{ color: "#fff", fontWeight: "600" }}>Shresth Veer Singh</span>  a Computer Science Engineering student at Lovely Professional University with a CGPA of 8.04. I specialize in building full-stack web applications using the MERN stack.
             </p>
             <p style={{ fontSize: "15px", color: "#9ca3af", lineHeight: "1.9", marginBottom: "16px" }}>
-              I've delivered real-world projects for clients — from a construction firm's business website to an AI-powered IT staffing platform — combining clean UI, strong architecture, and performance-first thinking.
+              I've delivered real-world projects for clients from a construction firm's business website to an AI-powered IT staffing platform combining clean UI, strong architecture, and performance-first thinking.
             </p>
             <p style={{ fontSize: "15px", color: "#9ca3af", lineHeight: "1.9" }}>
               Beyond development, I actively sharpen my DSA skills on LeetCode (209+ problems solved), hold multiple NPTEL certifications from IITs, and am driven by a passion for continuous learning and building products that matter.

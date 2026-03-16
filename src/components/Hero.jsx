@@ -98,9 +98,8 @@ const Hero = () => {
             lineHeight: "1.8",
           }}
         >
-          Computer Science Engineer & Full-Stack Developer crafting scalable,
-          high-performance web applications. Passionate about clean code,
-          modern UI, and turning ideas into real products.
+          Computer Science Engineer passionate about building modern, scalable web applications.
+          Always learning, building, and improving.
         </p>
 
         {/* BUTTONS */}
