@@ -1,0 +1,127 @@
+/* ================= SKILLS SECTION ================= */
+.skills-section {
+  background: #0b0f19;
+  padding: 120px 40px;
+  color: white;
+}
+
+/* CONTAINER */
+.skills-container {
+  max-width: 1200px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+}
+
+/* LEFT */
+.skills-left h2 {
+  font-size: 42px;
+  margin-bottom: 20px;
+}
+
+.skills-left p {
+  color: #cfcfcf;
+  line-height: 1.7;
+}
+
+.skills-left span {
+  color: #7c3aed;
+}
+
+.skills-tags {
+  margin-top: 30px;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.skills-tags span {
+  border: 1px solid rgba(124, 58, 237, 0.4);
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  color: #d1c4ff;
+}
+
+/* RIGHT */
+.skill-group {
+  margin-bottom: 32px;
+}
+
+.skill-group h3 {
+  color: #a78bfa;
+  margin-bottom: 16px;
+}
+
+.skill-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+/* ================= SKILL CARD ================= */
+.skill-card {
+  background: #111827;
+  padding: 14px 18px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.3s ease;
+}
+
+.skill-card img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.skill-card p {
+  font-size: 14px;
+  color: #e5e7eb;
+}
+
+/* HOVER */
+.skill-card:hover {
+  background: rgba(124, 58, 237, 0.18);
+  box-shadow: 0 10px 30px rgba(124, 58, 237, 0.35);
+  transform: translateY(-4px);
+}
+
+/* ================= ICON FIXES ================= */
+
+/* 🔴 JAVA ICON – LESS ZOOM */
+.skill-card.java img {
+  width: 24px;
+  height: 24px;
+}
+
+/* 🟢 MONGODB – MORE ZOOM */
+.skill-card.mongo img {
+  width: 84px;
+  height: 74px;
+}
+
+/* ⚫ GIT – BLACK ICON FIX */
+.skill-card.git img,
+.skill-card.github img {
+  filter: invert(1);
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 900px) {
+  .skills-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 500px) {
+  .skills-section {
+    padding: 90px 20px;
+  }
+
+  .skills-left h2 {
+    font-size: 32px;
+  }
+}
