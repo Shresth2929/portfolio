@@ -1,8 +1,8 @@
 import { useState } from "react";
 import svayam from "../assets/svayam.png";
 import prin from "../assets/prin.png";
-import quiz from "../assets/quiz.png";
 import tunify from "../assets/tunify.png";
+import bluePrintAI from "../assets/bluePrintAI.png";
 
 const projects = [
   {
@@ -16,6 +16,7 @@ const projects = [
     featured: true,
     period: "Dec '25 – Jan '26"
   },
+
   {
     img: prin,
     title: "Principle Pride",
@@ -27,31 +28,58 @@ const projects = [
     featured: true,
     period: "Sep '25 – Nov '25"
   },
+
   {
     img: tunify,
-    title: "Tunify",
-    desc: "Full-stack online music streaming platform using MERN stack — 1000+ songs, dynamic playlists, user auth & recommendations.",
+    title: "Tunify — AI Music Streaming Platform",
+    desc: "Production-ready AI-powered music streaming platform built with MERN stack featuring authentication, dynamic playlists, personalized recommendations, and real-time playback.",
     tags: ["Full Stack", "MERN"],
-    tech: ["Node.js", "Express.js", "MongoDB", "Cloudinary", "Tailwind CSS", "Framer Motion"],
-    demo: "#",
-    code: "https://github.com/manni2000/Music-App",
+    tech: [
+      "React.js",
+      "Node.js",
+      "Express.js",
+      "MongoDB",
+      "JWT",
+      "Cloudinary",
+      "Tailwind CSS",
+      "Framer Motion"
+    ],
+    demo: "https://tunify-ie.vercel.app/",
+    code: "https://github.com/Shresth2929",
     featured: false,
     period: "Mar '25 – Jun '25"
   },
+
   {
-    img: quiz,
-    title: "QuizBuzz",
-    desc: "Java Spring Boot quiz app with timer-based questions and instant result summary for Java DSA concepts.",
-    tags: ["Backend", "Java"],
-    tech: ["Java", "Spring Boot", "Thymeleaf", "Tailwind CSS"],
-    demo: "#",
-    code: "https://github.com/Shresth2929/QuizBuzz",
+    img: bluePrintAI,
+    title: "BluePrint AI — AI Architectural SaaS",
+    desc: "AI-powered SaaS platform that converts 2D floor plans into photorealistic 3D architectural renders using modern generative AI workflows.",
+    tags: ["Full Stack", "AI"],
+    tech: [
+      "Next.js",
+      "TypeScript",
+      "Node.js",
+      "PostgreSQL",
+      "Prisma ORM",
+      "Gemini AI",
+      "Tailwind CSS",
+      "Vercel"
+    ],
+    demo: "https://blue-print-ai-five.vercel.app/",
+    code: "https://github.com/Shresth2929",
     featured: false,
-    period: "2024"
+    period: "Nov '24 – Feb '25"
   },
 ];
 
-const allTags = ["All Projects", "Freelance", "Full Stack", "Frontend", "Backend"];
+const allTags = [
+  "All Projects",
+  "Freelance",
+  "Full Stack",
+  "Frontend",
+  "AI",
+  "MERN"
+];
 
 const Projects = () => {
 
