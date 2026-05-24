@@ -4,6 +4,7 @@ import prin from "../assets/prin.png";
 import tunify from "../assets/tunify.png";
 import bluePrintAI from "../assets/bluePrintAI.png";
 
+
 const projects = [
   {
     img: svayam,
@@ -45,7 +46,7 @@ const projects = [
       "Framer Motion"
     ],
     demo: "https://tunify-ie.vercel.app/",
-    code: "https://github.com/Shresth2929",
+    code: "https://github.com/Shresth2929/Tunify",
     featured: false,
     period: "Mar '25 – Jun '25"
   },
@@ -66,11 +67,12 @@ const projects = [
       "Vercel"
     ],
     demo: "https://blue-print-ai-five.vercel.app/",
-    code: "https://github.com/Shresth2929",
+    code: "https://github.com/Shresth2929/BluePrint-AI",
     featured: false,
     period: "Nov '24 – Feb '25"
   },
 ];
+
 
 const allTags = [
   "All Projects",
@@ -80,6 +82,7 @@ const allTags = [
   "AI",
   "MERN"
 ];
+
 
 const Projects = () => {
 
