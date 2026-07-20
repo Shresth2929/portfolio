@@ -3,6 +3,10 @@ import svayam from "../assets/svayam.png";
 import prin from "../assets/prin.png";
 import tunify from "../assets/tunify.png";
 import bluePrintAI from "../assets/bluePrintAI.png";
+import investOracleAI from "../assets/investOracle-AI.png";
+import alumniConnect from "../assets/AlumniConnect+.png";
+import quizzBuzz from "../assets/QuizzBuzz.png";
+
 
 
 const projects = [
@@ -71,6 +75,75 @@ const projects = [
     featured: false,
     period: "Nov '24 – Feb '25"
   },
+
+  {
+  img: investOracleAI,
+  title: "InvestOracle AI — AI Investment Research Platform",
+  desc: "Production-ready AI-powered investment research platform providing institutional-grade stock analysis, AI-generated investment reports, live market insights, and interactive dashboards.",
+  tags: ["Full Stack", "AI"],
+  tech: [
+    "React.js",
+    "TypeScript",
+    "Node.js",
+    "Express.js",
+    "PostgreSQL",
+    "Prisma ORM",
+    "Gemini AI",
+    "Finnhub API",
+    "React Query",
+    "Zustand",
+    "Docker",
+    "Tailwind CSS"
+  ],
+  demo: "https://invest-oracle-ai.vercel.app/",
+  code: "https://github.com/Shresth2929/InvestOracle-AI",
+  featured: false,
+  period: "Aug '25 – Oct '25"
+},
+
+{
+  img: alumniConnect,
+  title: "AlumniConnect+ — Alumni Networking Mobile App",
+  desc: "Cross-platform React Native application enabling alumni-student networking with secure authentication, real-time messaging, profile management, and seamless mobile user experience.",
+  tags: ["Full Stack", "Mobile"],
+  tech: [
+    "React Native",
+    "Expo Router",
+    "React Context API",
+    "Node.js",
+    "Express.js",
+    "MongoDB",
+    "JWT",
+    "Socket.io",
+    "Docker"
+  ],
+  demo: "https://expo.dev/accounts/shresth29/projects/alumniconnect/builds/d7c33a91-2938-4589-ad83-04c5dfe6f888",
+  code: "https://github.com/Shresth2929/AlumniConnect",
+  featured: false,
+  period: "Mar '25 – Jun '25"
+},
+
+{
+  img: quizzBuzz,
+  title: "QuizBuzz — Java Spring Boot Quiz Application",
+  desc: "Quiz management platform built with Java Spring Boot featuring secure session tracking, question management, score evaluation, input validation, and clean MVC architecture.",
+  tags: ["Backend", "Java"],
+  tech: [
+    "Java",
+    "Spring Boot",
+    "Thymeleaf",
+    "Maven",
+    "MVC",
+    "REST APIs",
+    "Git"
+  ],
+  demo: "#",
+  code: "https://github.com/Shresth2929/QuizBuzz",
+  featured: false,
+  period: "Jan '26 – Mar '26"
+},
+
+
 ];
 
 
@@ -80,8 +153,12 @@ const allTags = [
   "Full Stack",
   "Frontend",
   "AI",
-  "MERN"
+  "MERN",
+  "Mobile",
+  "Backend",
+  "Java"
 ];
+
 
 
 const Projects = () => {
