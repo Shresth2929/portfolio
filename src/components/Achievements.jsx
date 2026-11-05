@@ -1,147 +1,178 @@
-import reactLogo from "../assets/react.png";
-import nodeLogo from "../assets/node-js.png";
-import mongoLogo from "../assets/mongoDB.png";
-import expressLogo from "../assets/express.webp";
-import javaLogo from "../assets/java.png";
-import gitLogo from "../assets/social.png";
-
-const skills = [
-  { logo: reactLogo, title: "Frontend Development", desc: "Building modern, responsive UIs using React." },
-  { logo: nodeLogo, title: "Backend Development", desc: "Scalable server-side apps using Node.js." },
-  { logo: expressLogo, title: "API Development", desc: "RESTful APIs with Express & clean architecture." },
-  { logo: mongoLogo, title: "Database Management", desc: "Optimized MongoDB schemas & queries." },
-  { logo: javaLogo, title: "Java Programming", desc: "Strong OOP, DSA & backend fundamentals." },
-  { logo: gitLogo, title: "Version Control", desc: "Git, GitHub & collaborative workflows." },
-];
+import { useEffect, useRef } from "react";
 
 const achievements = [
   {
-    icon: "🔥",
-    title: "138-Day Max Streak on LeetCode",
-    desc: "Maintained a 138-day maximum problem-solving streak on LeetCode with 372 total submissions in the past year, showcasing exceptional consistency and dedication.",
+    num: "138",
+    unit: "DAYS",
+    title: "Max Streak on LeetCode",
+    desc: "Maintained a 138-day maximum problem-solving streak on LeetCode with 372 total submissions, showcasing exceptional consistency and dedication.",
     date: "2025",
-    color: "#f97316"
+    accent: "var(--yellow)",
   },
   {
-    icon: "💡",
-    title: "209+ Problems Solved on LeetCode",
-    desc: "Solved 209+ coding problems on LeetCode — 83 Easy, 95 Medium, 31 Hard — sharpening algorithmic thinking and problem-solving skills across multiple domains.",
+    num: "209+",
+    unit: "SOLVED",
+    title: "Problems Solved on LeetCode",
+    desc: "Solved 209+ coding problems on LeetCode — 83 Easy, 95 Medium, 31 Hard — sharpening algorithmic thinking across multiple domains.",
     date: "Oct '25",
-    color: "#7c3aed"
+    accent: "var(--soft-white)",
   },
   {
-    icon: "🏅",
-    title: "6 Badges Earned on LeetCode",
+    num: "06",
+    unit: "BADGES",
+    title: "Badges Earned on LeetCode",
     desc: "Earned 6 badges on LeetCode including the prestigious 100 Days Badge 2025, reflecting consistent participation and performance in competitive programming.",
     date: "Jan '25",
-    color: "#3b82f6"
+    accent: "var(--yellow)",
   },
   {
-    icon: "🏆",
+    num: "#1",
+    unit: "RANK",
     title: "Leaderboard Topper — Soft Skills & Communication",
-    desc: "Ranked among the top students in Soft Skills & Business Communication courses (2nd & 5th semester) at LPU, demonstrating strong leadership and spoken English proficiency.",
+    desc: "Ranked among the top students in Soft Skills & Business Communication courses (2nd & 5th semester) at LPU, demonstrating leadership and English proficiency.",
     date: "2023 – 2024",
-    color: "#22c55e"
+    accent: "var(--soft-white)",
   },
 ];
 
-const Achievements = () => {
-  return (
-    <section style={{ background: "#000", color: "#fff", padding: "100px 80px" }}>
+const useReveal = () => {
+  const ref = useRef(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { el.classList.add("visible"); obs.disconnect(); } },
+      { threshold: 0.1 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+  return ref;
+};
 
-      {/* ===== SKILLS ===== */}
-      <div style={{ textAlign: "center", marginBottom: "60px" }}>
-        <h2 style={{ fontSize: "38px", fontWeight: "700", marginBottom: "10px" }}>My Skills</h2>
-        <p style={{ color: "#9ca3af", fontSize: "15px" }}>
-          Full Stack Developer (MERN) with strong Java foundation
-        </p>
+const AchievementCard = ({ num, unit, title, desc, date, accent, index }) => {
+  const ref = useReveal();
+  return (
+    <div
+      ref={ref}
+      className={`reveal delay-${Math.min(index + 1, 5)}`}
+      style={{
+        borderTop: "1px solid var(--border-grey)",
+        padding: "clamp(24px, 3vw, 40px) 0",
+        display: "grid",
+        gridTemplateColumns: "120px 1fr",
+        gap: "clamp(20px, 3vw, 48px)",
+        alignItems: "flex-start",
+        transition: "padding-left 0.3s ease",
+        cursor: "default",
+        position: "relative",
+      }}
+      onMouseEnter={e => { e.currentTarget.style.paddingLeft = "16px"; }}
+      onMouseLeave={e => { e.currentTarget.style.paddingLeft = "0px"; }}
+    >
+      {/* Yellow left accent on hover */}
+      <div
+        style={{
+          position: "absolute", left: 0, top: 0, bottom: 0,
+          width: "2px", background: "var(--yellow)",
+          transition: "opacity 0.3s ease",
+        }}
+      />
+
+      {/* Number */}
+      <div>
+        <div
+          style={{
+            fontSize: "clamp(32px, 5vw, 56px)", fontWeight: "800",
+            letterSpacing: "-0.02em", lineHeight: 1,
+            fontFamily: "'Sora', sans-serif",
+            color: accent,
+          }}
+        >
+          {num}
+        </div>
+        <div
+          style={{
+            fontSize: "9px", fontWeight: "700", letterSpacing: "0.14em",
+            color: "var(--text-dim)", textTransform: "uppercase", marginTop: "4px",
+          }}
+        >
+          {unit}
+        </div>
       </div>
 
-      <div style={{
-        display: "grid", gridTemplateColumns: "repeat(3, 1fr)",
-        gap: "20px", maxWidth: "1000px", margin: "0 auto 100px auto"
-      }}>
-        {skills.map(({ logo, title, desc }) => (
-          <div
-            key={title}
+      {/* Content */}
+      <div>
+        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "10px", alignItems: "flex-start", gap: "12px" }}>
+          <h3
             style={{
-              background: "#0d1117", border: "1px solid #1e2535",
-              borderRadius: "16px", padding: "32px 24px",
-              textAlign: "center", transition: "transform 0.25s, border-color 0.25s",
-              cursor: "default"
-            }}
-            onMouseEnter={e => {
-              e.currentTarget.style.transform = "translateY(-6px)";
-              e.currentTarget.style.borderColor = "#7c3aed";
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.transform = "translateY(0)";
-              e.currentTarget.style.borderColor = "#1e2535";
+              fontSize: "clamp(14px, 1.5vw, 17px)", fontWeight: "700",
+              color: "var(--soft-white)", lineHeight: "1.3",
             }}
           >
-            <div style={{
-              width: "64px", height: "64px", borderRadius: "14px",
-              background: "#1a1f2e", display: "flex", alignItems: "center",
-              justifyContent: "center", margin: "0 auto 20px auto"
-            }}>
-              <img src={logo} alt={title} style={{ width: "36px", height: "36px", objectFit: "contain" }} />
-            </div>
-            <h3 style={{ fontSize: "16px", fontWeight: "600", marginBottom: "10px" }}>{title}</h3>
-            <p style={{ fontSize: "13px", color: "#9ca3af", lineHeight: "1.6" }}>{desc}</p>
-          </div>
-        ))}
-      </div>
-
-      {/* ===== ACHIEVEMENTS ===== */}
-      <div style={{ textAlign: "center", marginBottom: "70px" }}>
-        <h2 style={{ fontSize: "38px", fontWeight: "700", marginBottom: "10px" }}>Achievements</h2>
-        <p style={{ color: "#9ca3af", fontSize: "15px" }}>
-          Milestones that reflect consistency, excellence & growth
+            {title}
+          </h3>
+          <span
+            style={{
+              fontSize: "10px", color: "var(--yellow)", fontWeight: "700",
+              letterSpacing: "0.1em", whiteSpace: "nowrap",
+              border: "1px solid rgba(245,230,66,0.3)", padding: "3px 10px",
+            }}
+          >
+            {date}
+          </span>
+        </div>
+        <p style={{ fontSize: "clamp(12px, 1.1vw, 13px)", color: "var(--muted-grey)", lineHeight: "1.75" }}>
+          {desc}
         </p>
       </div>
+    </div>
+  );
+};
 
-      <div style={{ maxWidth: "750px", margin: "0 auto", position: "relative" }}>
-        <div style={{
-          position: "absolute", left: "21px", top: "0", bottom: "0",
-          width: "2px", background: "linear-gradient(to bottom, #7c3aed, transparent)"
-        }} />
+const Achievements = () => {
+  const headRef = useReveal();
 
-        {achievements.map(({ icon, title, desc, date, color }, i) => (
-          <div key={i} style={{ display: "flex", gap: "24px", marginBottom: "28px", alignItems: "flex-start" }}>
-            <div style={{
-              width: "44px", height: "44px", borderRadius: "50%",
-              background: "#0d1117", border: `2px solid ${color}`,
-              display: "flex", alignItems: "center", justifyContent: "center",
-              fontSize: "20px", flexShrink: 0, zIndex: 1
-            }}>
-              {icon}
-            </div>
-            <div
-              style={{
-                flex: 1, background: "#0d1117", border: "1px solid #1e2535",
-                borderRadius: "14px", padding: "20px 24px",
-                transition: "border-color 0.25s, transform 0.25s"
-              }}
-              onMouseEnter={e => {
-                e.currentTarget.style.borderColor = color;
-                e.currentTarget.style.transform = "translateX(6px)";
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.borderColor = "#1e2535";
-                e.currentTarget.style.transform = "translateX(0)";
-              }}
-            >
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
-                <h3 style={{ fontSize: "15px", fontWeight: "700", color: "#fff" }}>{title}</h3>
-                <span style={{ fontSize: "11px", color: color, fontWeight: "600", whiteSpace: "nowrap", marginLeft: "12px" }}>
-                  {date}
-                </span>
-              </div>
-              <p style={{ fontSize: "13px", color: "#9ca3af", lineHeight: "1.6" }}>{desc}</p>
-            </div>
-          </div>
-        ))}
+  return (
+    <section
+      style={{
+        background: "var(--deep-black)",
+        borderTop: "1px solid var(--border-grey)",
+        padding: "clamp(60px, 8vw, 120px) clamp(20px, 6vw, 80px)",
+      }}
+    >
+      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+
+        {/* Heading */}
+        <div ref={headRef} className="reveal" style={{ marginBottom: "clamp(40px, 5vw, 72px)" }}>
+          <span className="section-label">Proof of Progress</span>
+          <h2
+            style={{
+              fontSize: "clamp(36px, 7vw, 100px)",
+              fontWeight: "800", letterSpacing: "-0.02em",
+              lineHeight: "1.0", fontFamily: "'Sora', sans-serif",
+              color: "var(--soft-white)",
+            }}
+          >
+            PROOF OF<br />
+            <span style={{ color: "var(--yellow)" }}>PROGRESS.</span>
+          </h2>
+        </div>
+
+        {/* Achievement list */}
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          {achievements.map((a, i) => (
+            <AchievementCard key={a.title} {...a} index={i} />
+          ))}
+          <div style={{ height: "1px", background: "var(--border-grey)" }} />
+        </div>
       </div>
+
+      <style>{`
+        @media (max-width: 600px) {
+          .ach-row { grid-template-columns: 80px 1fr !important; gap: 16px !important; }
+        }
+      `}</style>
     </section>
   );
 };

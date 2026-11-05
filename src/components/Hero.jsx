@@ -1,267 +1,405 @@
+import { useEffect, useRef, useState } from "react";
 import profileImg from "../assets/myPic.jpeg";
+import downloadIcon from "../assets/download.png";
 import linkedinIcon from "../assets/linkedin.png";
 import githubIcon from "../assets/github.png";
 import whatsappIcon from "../assets/whatsapp.png";
-import downloadIcon from "../assets/download.png";
 
 const scrollTo = (id) => {
   const el = document.getElementById(id);
   if (el) el.scrollIntoView({ behavior: "smooth" });
 };
 
+const LINES = ["DESIGNING.", "BUILDING.", "SCALING."];
+
 const Hero = () => {
+  const [revealed, setRevealed] = useState(false);
+  const [imgLoaded, setImgLoaded] = useState(false);
+  const heroRef = useRef(null);
 
-  const btnHover = (e, type) => {
-    if (type === "primary") {
-      e.currentTarget.style.transform = "translateY(-3px)";
-      e.currentTarget.style.boxShadow = "0 8px 25px rgba(124,58,237,0.5)";
-      e.currentTarget.style.background = "#6d28d9";
-    } else if (type === "outline-white") {
-      e.currentTarget.style.transform = "translateY(-3px)";
-      e.currentTarget.style.background = "#fff";
-      e.currentTarget.style.color = "#000";
-      e.currentTarget.style.boxShadow = "0 8px 25px rgba(255,255,255,0.2)";
-    } else if (type === "outline-purple") {
-      e.currentTarget.style.transform = "translateY(-3px)";
-      e.currentTarget.style.background = "#7c3aed";
-      e.currentTarget.style.boxShadow = "0 8px 25px rgba(124,58,237,0.5)";
-    }
-  };
+  useEffect(() => {
+    const timer = setTimeout(() => setRevealed(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
 
-  const btnLeave = (e, type) => {
-    e.currentTarget.style.transform = "translateY(0)";
-    e.currentTarget.style.boxShadow = "none";
-    if (type === "primary") {
-      e.currentTarget.style.background = "#7c3aed";
-    } else if (type === "outline-white") {
-      e.currentTarget.style.background = "transparent";
-      e.currentTarget.style.color = "#fff";
-    } else if (type === "outline-purple") {
-      e.currentTarget.style.background = "transparent";
-    }
-  };
-
-  const socialLinks = [
-    {
-      src: linkedinIcon,
-      alt: "LinkedIn",
-      href: "https://www.linkedin.com/in/shresth-veer-singh-598830291/",
-      filter: "none",
-    },
-    {
-      src: githubIcon,
-      alt: "GitHub",
-      href: "https://github.com/shresth2929",
-      filter: "invert(1)",
-    },
-    {
-      src: whatsappIcon,
-      alt: "WhatsApp",
-      href: "https://wa.me/7800794876",
-      filter: "none",
-    },
-  ];
+  /* Parallax on mouse move */
+  const imgRef = useRef(null);
+  useEffect(() => {
+    const onMove = (e) => {
+      if (!imgRef.current || window.innerWidth < 900) return;
+      const x = (e.clientX / window.innerWidth - 0.5) * 20;
+      const y = (e.clientY / window.innerHeight - 0.5) * 10;
+      imgRef.current.style.transform = `translate(${x}px, ${y}px)`;
+    };
+    window.addEventListener("mousemove", onMove);
+    return () => window.removeEventListener("mousemove", onMove);
+  }, []);
 
   return (
     <section
+      ref={heroRef}
       style={{
         minHeight: "100vh",
-        background: "#000",
+        background: "var(--black)",
+        position: "relative",
+        overflow: "hidden",
         display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        paddingTop: "100px",
-        paddingBottom: "60px",
-        paddingLeft: "120px",
-        paddingRight: "60px",
+        flexDirection: "column",
+        justifyContent: "flex-end",
+        paddingTop: "68px",
       }}
     >
-      {/* LEFT CONTENT */}
-      <div style={{ maxWidth: "560px" }}>
-        <h1
-          style={{
-            fontSize: "64px",
-            fontWeight: "800",
-            color: "#fff",
-            lineHeight: "1.2",
-          }}
-        >
-          Hey, I'm <br />
-          <span style={{ color: "#7c3aed" }}>Shresth</span>
-        </h1>
+      {/* Background Grid */}
+      <div
+        style={{
+          position: "absolute", inset: 0, zIndex: 0,
+          backgroundImage: `
+            linear-gradient(rgba(245,230,66,0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(245,230,66,0.03) 1px, transparent 1px)
+          `,
+          backgroundSize: "80px 80px",
+        }}
+      />
 
-        <p
-          style={{
-            marginTop: "22px",
-            fontSize: "16px",
-            color: "#d1d5db",
-            lineHeight: "1.8",
-          }}
-        >
-          Computer Science Engineer passionate about building modern, scalable web applications.
-          Always learning, building, and improving.
-        </p>
+      {/* Yellow Glow */}
+      <div
+        style={{
+          position: "absolute", top: "30%", right: "5%",
+          width: "500px", height: "500px",
+          background: "radial-gradient(circle, rgba(245,230,66,0.07) 0%, transparent 70%)",
+          zIndex: 0, pointerEvents: "none",
+        }}
+      />
 
-        {/* BUTTONS */}
+      {/* STATUS BADGE */}
+      <div
+        style={{
+          position: "absolute", top: "100px", right: "clamp(20px, 5vw, 60px)",
+          display: "flex", alignItems: "center", gap: "8px", zIndex: 2,
+          opacity: revealed ? 1 : 0,
+          transform: revealed ? "translateY(0)" : "translateY(-16px)",
+          transition: "all 0.6s ease 0.8s",
+        }}
+      >
+        <span
+          style={{
+            width: "8px", height: "8px", borderRadius: "50%",
+            background: "#22c55e",
+            animation: "pulse-yellow 2s infinite",
+            boxShadow: "0 0 0 0 rgba(34,197,94,0.4)",
+          }}
+        />
+        <span style={{ fontSize: "11px", color: "var(--muted-grey)", letterSpacing: "0.1em", textTransform: "uppercase" }}>
+          Available for work
+        </span>
+      </div>
+
+      {/* MAIN CONTENT */}
+      <div
+        style={{
+          position: "relative", zIndex: 1,
+          maxWidth: "1400px", margin: "0 auto", width: "100%",
+          padding: "clamp(20px, 4vw, 60px) clamp(20px, 5vw, 60px)",
+          display: "grid",
+          gridTemplateColumns: "1fr auto",
+          gap: "clamp(20px, 4vw, 60px)",
+          alignItems: "flex-end",
+        }}
+        className="hero-grid"
+      >
+        {/* LEFT: TYPOGRAPHY */}
+        <div>
+          {/* Intro line */}
+          <div
+            style={{
+              display: "flex", alignItems: "center", gap: "12px",
+              marginBottom: "clamp(16px, 2vw, 28px)",
+              opacity: revealed ? 1 : 0,
+              transform: revealed ? "translateY(0)" : "translateY(20px)",
+              transition: "all 0.6s ease 0.1s",
+            }}
+          >
+            <span
+              style={{
+                fontSize: "11px", fontWeight: "700", letterSpacing: "0.18em",
+                textTransform: "uppercase", color: "var(--muted-grey)",
+              }}
+            >
+              Full Stack Developer
+            </span>
+            <span style={{ width: "40px", height: "1px", background: "var(--border-grey)" }} />
+            <span
+              style={{
+                fontSize: "11px", fontWeight: "700", letterSpacing: "0.18em",
+                textTransform: "uppercase", color: "var(--yellow)",
+              }}
+            >
+              Lucknow, India
+            </span>
+          </div>
+
+          {/* BIG TYPE LINES */}
+          <div style={{ marginBottom: "clamp(10px, 2vw, 20px)" }}>
+            {LINES.map((line, i) => (
+              <div
+                key={line}
+                style={{ overflow: "hidden", lineHeight: 1 }}
+              >
+                <h1
+                  style={{
+                    fontSize: "clamp(42px, 9vw, 140px)",
+                    fontWeight: "800",
+                    letterSpacing: "-0.02em",
+                    color: i === 1 ? "var(--yellow)" : "var(--soft-white)",
+                    lineHeight: "1.0",
+                    fontFamily: "'Sora', 'Space Grotesk', sans-serif",
+                    display: "block",
+                    opacity: revealed ? 1 : 0,
+                    transform: revealed ? "translateY(0)" : "translateY(100%)",
+                    transition: `opacity 0.7s cubic-bezier(0.16,1,0.3,1) ${0.2 + i * 0.12}s, transform 0.7s cubic-bezier(0.16,1,0.3,1) ${0.2 + i * 0.12}s`,
+                    marginBottom: "2px",
+                  }}
+                >
+                  {line}
+                </h1>
+              </div>
+            ))}
+          </div>
+
+          {/* NAME */}
+          <div
+            style={{
+              display: "flex", alignItems: "center", gap: "20px",
+              marginBottom: "clamp(20px, 3vw, 40px)",
+              opacity: revealed ? 1 : 0,
+              transform: revealed ? "translateX(0)" : "translateX(-30px)",
+              transition: "all 0.7s ease 0.58s",
+            }}
+          >
+            <span
+              style={{
+                width: "40px", height: "1px",
+                background: "var(--yellow)", flexShrink: 0,
+              }}
+            />
+            <p
+              style={{
+                fontSize: "clamp(13px, 1.6vw, 18px)", fontWeight: "400",
+                color: "var(--muted-grey)", letterSpacing: "0.06em",
+              }}
+            >
+              HEY, I'M{" "}
+              <span style={{ color: "var(--soft-white)", fontWeight: "700" }}>
+                SHRESTH VEER SINGH
+              </span>
+            </p>
+          </div>
+
+          {/* BIO */}
+          <p
+            style={{
+              maxWidth: "520px",
+              fontSize: "clamp(14px, 1.4vw, 16px)",
+              color: "var(--muted-grey)",
+              lineHeight: "1.8",
+              marginBottom: "clamp(24px, 3vw, 44px)",
+              opacity: revealed ? 1 : 0,
+              transform: revealed ? "translateY(0)" : "translateY(20px)",
+              transition: "all 0.7s ease 0.68s",
+            }}
+          >
+            Computer Science Engineering student passionate about building modern,
+            scalable web applications, intelligent products, and impactful digital experiences.
+            <span style={{ color: "var(--yellow)" }}> MERN Stack | AI Enthusiast.</span>
+          </p>
+
+          {/* CTA BUTTONS */}
+          <div
+            style={{
+              display: "flex", flexWrap: "wrap", gap: "12px", alignItems: "center",
+              marginBottom: "clamp(32px, 4vw, 56px)",
+              opacity: revealed ? 1 : 0,
+              transform: revealed ? "translateY(0)" : "translateY(20px)",
+              transition: "all 0.7s ease 0.78s",
+            }}
+          >
+            <button
+              className="btn-yellow"
+              onClick={() => scrollTo("projects")}
+            >
+              Explore My Work
+              <span style={{ fontSize: "16px" }}>→</span>
+            </button>
+            <a
+              href="https://drive.google.com/uc?export=download&id=1tZ7HsUupL_ntUY7iUxQSQ9v7dykntcZG"
+              download="Shresth_Resume.pdf"
+              target="_blank"
+              rel="noreferrer"
+              className="btn-outline"
+            >
+              <img src={downloadIcon} alt="Download" style={{ width: "14px", height: "14px", filter: "invert(1)" }} />
+              Resume
+            </a>
+          </div>
+
+          {/* SOCIAL LINKS */}
+          <div
+            style={{
+              display: "flex", gap: "12px",
+              opacity: revealed ? 1 : 0,
+              transform: revealed ? "translateY(0)" : "translateY(16px)",
+              transition: "all 0.7s ease 0.88s",
+            }}
+          >
+            {[
+              { src: linkedinIcon, alt: "LinkedIn", href: "https://www.linkedin.com/in/shresth-veer-singh-598830291/", filter: "none" },
+              { src: githubIcon,   alt: "GitHub",   href: "https://github.com/shresth2929",                             filter: "invert(1)" },
+              { src: whatsappIcon, alt: "WhatsApp", href: "https://wa.me/7800794876",                                   filter: "none" },
+            ].map(({ src, alt, href, filter }) => (
+              <a
+                key={alt}
+                href={href}
+                target="_blank"
+                rel="noreferrer"
+                style={{
+                  width: "40px", height: "40px",
+                  border: "1px solid var(--border-grey)",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  textDecoration: "none", transition: "all 0.25s ease",
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.borderColor = "var(--yellow)";
+                  e.currentTarget.style.background = "rgba(245,230,66,0.1)";
+                  e.currentTarget.style.transform = "translateY(-4px)";
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.borderColor = "var(--border-grey)";
+                  e.currentTarget.style.background = "transparent";
+                  e.currentTarget.style.transform = "translateY(0)";
+                }}
+              >
+                <img src={src} alt={alt} style={{ width: "18px", height: "18px", filter }} />
+              </a>
+            ))}
+          </div>
+        </div>
+
+        {/* RIGHT: PROFILE IMAGE */}
         <div
           style={{
-            marginTop: "40px",
-            display: "flex",
-            gap: "18px",
-            flexWrap: "wrap",
+            position: "relative", flexShrink: 0, alignSelf: "flex-end",
+            opacity: revealed ? 1 : 0,
+            transition: "opacity 1s ease 0.4s",
           }}
+          className="hero-image-col"
         >
-          {/* ABOUT */}
-          <button
-            onClick={() => scrollTo("about")}
+          {/* Yellow accent frame */}
+          <div
             style={{
-              background: "#7c3aed",
-              color: "#fff",
-              padding: "13px 34px",
-              borderRadius: "35px",
-              fontSize: "15px",
-              fontWeight: "600",
-              border: "none",
-              cursor: "pointer",
-              transition: "all 0.25s ease",
+              position: "absolute",
+              bottom: "16px", right: "16px",
+              width: "calc(100% - 16px)", height: "calc(100% - 16px)",
+              border: "2px solid var(--yellow)",
+              zIndex: 0,
+              opacity: 0.5,
             }}
-            onMouseEnter={(e) => btnHover(e, "primary")}
-            onMouseLeave={(e) => btnLeave(e, "primary")}
-          >
-            About Me
-          </button>
-
-          {/* WORK */}
-          <button
-            onClick={() => scrollTo("projects")}
+          />
+          {/* Image */}
+          <div
+            ref={imgRef}
             style={{
-              background: "transparent",
-              color: "#fff",
-              padding: "13px 34px",
-              borderRadius: "35px",
-              fontSize: "15px",
-              fontWeight: "600",
-              border: "2px solid #fff",
-              cursor: "pointer",
-              transition: "all 0.25s ease",
+              width: "clamp(200px, 24vw, 380px)",
+              height: "clamp(260px, 32vw, 500px)",
+              overflow: "hidden",
+              position: "relative", zIndex: 1,
+              transition: "transform 0.15s ease",
             }}
-            onMouseEnter={(e) => btnHover(e, "outline-white")}
-            onMouseLeave={(e) => btnLeave(e, "outline-white")}
-          >
-            My Work
-          </button>
-
-          {/* RESUME */}
-          <a
-            href="https://drive.google.com/uc?export=download&id=1tZ7HsUupL_ntUY7iUxQSQ9v7dykntcZG"
-            download="Shresth_Resume.pdf"
-            target="_blank"
-            rel="noreferrer"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "10px",
-              color: "#fff",
-              padding: "13px 30px",
-              borderRadius: "35px",
-              fontSize: "15px",
-              fontWeight: "600",
-              border: "2px solid #7c3aed",
-              textDecoration: "none",
-              cursor: "pointer",
-              transition: "all 0.25s ease",
-            }}
-            onMouseEnter={(e) => btnHover(e, "outline-purple")}
-            onMouseLeave={(e) => btnLeave(e, "outline-purple")}
           >
             <img
-              src={downloadIcon}
-              alt="Download"
-              style={{ width: "18px", height: "18px", filter: "invert(1)" }}
+              src={profileImg}
+              alt="Shresth Veer Singh"
+              onLoad={() => setImgLoaded(true)}
+              style={{
+                width: "100%", height: "100%",
+                objectFit: "cover", objectPosition: "top",
+                filter: imgLoaded ? "grayscale(20%) contrast(1.05)" : "none",
+                transition: "filter 0.6s ease",
+              }}
             />
-            Resume
-          </a>
+            {/* Yellow overlay accent */}
+            <div
+              style={{
+                position: "absolute", inset: 0,
+                background: "linear-gradient(to top, rgba(245,230,66,0.12) 0%, transparent 50%)",
+                pointerEvents: "none",
+              }}
+            />
+          </div>
+
+          {/* Floating tag: designation */}
+          <div
+            style={{
+              position: "absolute", top: "24px", left: "-24px",
+              background: "var(--charcoal)", border: "1px solid var(--border-grey)",
+              padding: "10px 16px", zIndex: 2,
+            }}
+          >
+            <div style={{ fontSize: "10px", color: "var(--yellow)", fontWeight: "700", letterSpacing: "0.12em", textTransform: "uppercase" }}>MERN Stack</div>
+            <div style={{ fontSize: "11px", color: "var(--muted-grey)", marginTop: "2px" }}>Full Stack Developer</div>
+          </div>
         </div>
       </div>
 
-      {/* RIGHT SIDE */}
+      {/* SCROLL INDICATOR */}
       <div
         style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "20px",
-          marginRight: "80px",
+          position: "absolute", bottom: "32px", left: "50%", transform: "translateX(-50%)",
+          display: "flex", flexDirection: "column", alignItems: "center", gap: "8px",
+          zIndex: 2,
+          opacity: revealed ? 1 : 0,
+          transition: "opacity 1s ease 1.2s",
         }}
       >
-        {/* PROFILE IMAGE */}
+        <span style={{ fontSize: "10px", letterSpacing: "0.18em", color: "var(--text-dim)", textTransform: "uppercase" }}>Scroll</span>
         <div
           style={{
-            width: "380px",
-            height: "380px",
-            borderRadius: "50%",
-            overflow: "hidden",
-            background: "#fff",
-            flexShrink: 0,
+            width: "1px", height: "48px",
+            background: "linear-gradient(to bottom, var(--yellow), transparent)",
+            animation: "float 2s ease-in-out infinite",
           }}
-        >
-          <img
-            src={profileImg}
-            alt="Shresth"
-            style={{ width: "100%", height: "100%", objectFit: "cover" }}
-          />
-        </div>
+        />
+      </div>
 
-        {/* SOCIAL ICONS */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "16px",
-            marginRight: "30px",
-          }}
-        >
-          {socialLinks.map(({ src, alt, href, filter }) => (
-            <a
-              key={alt}
-              href={href}
-              target="_blank"
-              rel="noreferrer"
-              style={{
-                width: "40px",
-                height: "40px",
-                borderRadius: "50%",
-                background: "#0d1117",
-                border: "1px solid #1e2535",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                transition: "all 0.25s ease",
-                textDecoration: "none",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "#7c3aed";
-                e.currentTarget.style.background = "rgba(124,58,237,0.15)";
-                e.currentTarget.style.transform =
-                  "translateY(-4px) scale(1.1)";
-                e.currentTarget.style.boxShadow =
-                  "0 6px 20px rgba(124,58,237,0.4)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "#1e2535";
-                e.currentTarget.style.background = "#0d1117";
-                e.currentTarget.style.transform = "translateY(0) scale(1)";
-                e.currentTarget.style.boxShadow = "none";
-              }}
-            >
-              <img
-                src={src}
-                alt={alt}
-                style={{ width: "20px", height: "20px", filter }}
-              />
-            </a>
+      {/* Ticker tape */}
+      <div
+        className="ticker-wrap"
+        style={{ position: "relative", zIndex: 1 }}
+      >
+        <div className="ticker-track">
+          {["React.js", "•", "Next.js", "•", "Node.js", "•", "MongoDB", "•", "TypeScript", "•", "Tailwind CSS", "•", "Docker", "•", "AWS", "•", "PostgreSQL", "•", "Prisma", "•", "Full Stack", "•", "MERN Stack", "•", "AI Enthusiast", "•",
+            "React.js", "•", "Next.js", "•", "Node.js", "•", "MongoDB", "•", "TypeScript", "•", "Tailwind CSS", "•", "Docker", "•", "AWS", "•", "PostgreSQL", "•", "Prisma", "•", "Full Stack", "•", "MERN Stack", "•", "AI Enthusiast", "•"
+          ].map((item, i) => (
+            item === "•"
+              ? <span key={i} className="ydot">●</span>
+              : <span key={i}>{item}</span>
           ))}
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 900px) {
+          .hero-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .hero-image-col {
+            display: none !important;
+          }
+        }
+        @keyframes pulse-yellow {
+          0%, 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0.5); }
+          50% { box-shadow: 0 0 0 8px rgba(34,197,94,0); }
+        }
+      `}</style>
     </section>
   );
 };

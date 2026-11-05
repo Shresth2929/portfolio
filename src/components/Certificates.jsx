@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from "react";
 import dsa from "../assets/dsa.png";
 import ml from "../assets/ml.png";
 import cloud from "../assets/cloud.png";
@@ -15,7 +16,6 @@ const certs = [
     score: "60%",
     viewLink: "https://drive.google.com/file/d/1iSbfie0iE5OGpYq0Sitn6OE9sV8gAbqo/view",
     downloadLink: "https://drive.google.com/uc?export=download&id=1iSbfie0iE5OGpYq0Sitn6OE9sV8gAbqo",
-    gradient: "linear-gradient(135deg, #1a2035, #0d1117)"
   },
   {
     img: ml,
@@ -26,7 +26,6 @@ const certs = [
     score: "63%",
     viewLink: "https://drive.google.com/file/d/1VLTRXwFeAm8Cdlz5aU52kgImThy1h_s1/view",
     downloadLink: "https://drive.google.com/uc?export=download&id=1VLTRXwFeAm8Cdlz5aU52kgImThy1h_s1",
-    gradient: "linear-gradient(135deg, #0d2035, #0a1a2e)"
   },
   {
     img: cloud,
@@ -37,7 +36,6 @@ const certs = [
     score: "51%",
     viewLink: "https://drive.google.com/file/d/1JmMv3hYp8yYbJPkcyAnZnV_RcxF9GC80/view",
     downloadLink: "https://drive.google.com/uc?export=download&id=1JmMv3hYp8yYbJPkcyAnZnV_RcxF9GC80",
-    gradient: "linear-gradient(135deg, #0a1a2e, #0d1117)"
   },
   {
     img: genAI,
@@ -48,7 +46,6 @@ const certs = [
     score: null,
     viewLink: "https://drive.google.com/file/d/1hQDYvVEgr_3x-d2YOdD2pxlJKCNIz7N2/view",
     downloadLink: "https://drive.google.com/uc?export=download&id=1hQDYvVEgr_3x-d2YOdD2pxlJKCNIz7N2",
-    gradient: "linear-gradient(135deg, #1a1535, #0d1020)"
   },
   {
     img: computationalTheory,
@@ -59,7 +56,6 @@ const certs = [
     score: null,
     viewLink: "https://drive.google.com/file/d/1SxdgcEcYBxUMeecBUMXWiid6SWUtH6pC/view",
     downloadLink: "https://drive.google.com/uc?export=download&id=1SxdgcEcYBxUMeecBUMXWiid6SWUtH6pC",
-    gradient: "linear-gradient(135deg, #1a1020, #0d0a1a)"
   },
   {
     img: placementAce,
@@ -70,141 +66,211 @@ const certs = [
     score: "Grade O",
     viewLink: "https://drive.google.com/file/d/1z5surZlgeDHAzx3FZzeFlRRlhvC29PT1/view",
     downloadLink: "https://drive.google.com/uc?export=download&id=1z5surZlgeDHAzx3FZzeFlRRlhvC29PT1",
-    gradient: "linear-gradient(135deg, #1a0a00, #2a1500)"
   },
 ];
 
-const Certificates = () => {
-  return (
-    <section style={{ background: "#000", color: "#fff", padding: "100px 80px" }}>
+const useReveal = () => {
+  const ref = useRef(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { el.classList.add("visible"); obs.disconnect(); } },
+      { threshold: 0.08 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+  return ref;
+};
 
-      <div style={{ textAlign: "center", marginBottom: "50px" }}>
-        <h2 style={{ fontSize: "38px", fontWeight: "700", marginBottom: "10px" }}>Certifications</h2>
-        <p style={{ color: "#9ca3af", fontSize: "15px" }}>
-          Professional credentials that validate my technical expertise
-        </p>
+const CertCard = ({ cert, index }) => {
+  const { img, issuer, title, org, date, score, viewLink, downloadLink } = cert;
+  const [hovered, setHovered] = useState(false);
+  const ref = useReveal();
+
+  return (
+    <div
+      ref={ref}
+      className={`reveal delay-${Math.min((index % 3) + 1, 5)}`}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        background: "var(--charcoal)",
+        border: "1px solid",
+        borderColor: hovered ? "rgba(245,230,66,0.5)" : "var(--border-grey)",
+        overflow: "hidden",
+        display: "flex",
+        flexDirection: "column",
+        transition: "border-color 0.3s ease, transform 0.3s ease",
+        transform: hovered ? "translateY(-4px)" : "translateY(0)",
+      }}
+    >
+      {/* Image area */}
+      <div
+        style={{
+          width: "100%", height: "140px",
+          position: "relative", overflow: "hidden", flexShrink: 0,
+          background: "var(--dark-grey)",
+        }}
+      >
+        <img
+          src={img}
+          alt={title}
+          style={{
+            width: "100%", height: "100%", objectFit: "cover",
+            opacity: 0.85,
+            transition: "transform 0.5s ease, opacity 0.3s ease",
+            transform: hovered ? "scale(1.05)" : "scale(1)",
+          }}
+        />
+        {/* Issuer badge */}
+        <div
+          style={{
+            position: "absolute", top: "10px", left: "10px",
+            background: "var(--yellow)", color: "var(--black)",
+            fontSize: "9px", fontWeight: "800", letterSpacing: "0.1em", textTransform: "uppercase",
+            padding: "3px 10px",
+          }}
+        >
+          {issuer}
+        </div>
+        {/* Date badge */}
+        <div
+          style={{
+            position: "absolute", bottom: "10px", right: "10px",
+            background: "rgba(0,0,0,0.7)", color: "var(--muted-grey)",
+            fontSize: "10px", letterSpacing: "0.08em",
+            padding: "3px 8px",
+          }}
+        >
+          {date}
+        </div>
       </div>
 
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(3, 1fr)",
-        gap: "20px",
-        maxWidth: "1000px",
-        margin: "0 auto"
-      }}>
-        {certs.map(({ img, issuer, title, org, date, score, viewLink, downloadLink, gradient }) => (
-          <div
-            key={title}
+      {/* Content */}
+      <div
+        style={{
+          padding: "clamp(14px, 1.6vw, 20px)",
+          flex: 1, display: "flex", flexDirection: "column", gap: "10px",
+        }}
+      >
+        <h3
+          style={{
+            fontSize: "clamp(12px, 1.1vw, 14px)", fontWeight: "700",
+            color: "var(--soft-white)", lineHeight: "1.4",
+          }}
+        >
+          {title}
+        </h3>
+        <p style={{ fontSize: "11px", color: "var(--text-dim)", letterSpacing: "0.04em" }}>
+          {org}
+        </p>
+        {score && (
+          <span
             style={{
-              background: "#0d1117",
-              border: "1px solid #1e2535",
-              borderRadius: "14px",
-              overflow: "hidden",
-              transition: "transform 0.25s, border-color 0.25s",
-              display: "flex",
-              flexDirection: "column"
-            }}
-            onMouseEnter={e => {
-              e.currentTarget.style.transform = "translateY(-5px)";
-              e.currentTarget.style.borderColor = "#7c3aed";
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.transform = "translateY(0)";
-              e.currentTarget.style.borderColor = "#1e2535";
+              display: "inline-block", alignSelf: "flex-start",
+              fontSize: "10px", fontWeight: "700", letterSpacing: "0.1em", textTransform: "uppercase",
+              color: "var(--yellow)", border: "1px solid rgba(245,230,66,0.4)",
+              padding: "3px 10px",
             }}
           >
-            <div style={{
-              width: "100%", height: "140px",
-              background: gradient,
-              position: "relative", overflow: "hidden"
-            }}>
-              <img
-                src={img}
-                alt={title}
-                style={{ width: "100%", height: "100%", objectFit: "cover", opacity: "0.85" }}
-              />
-              <div style={{
-                position: "absolute", top: "10px", left: "10px",
-                background: "rgba(124,58,237,0.9)", color: "#fff",
-                fontSize: "10px", padding: "3px 8px",
-                borderRadius: "6px", fontWeight: "600"
-              }}>
-                {issuer}
-              </div>
-              <div style={{
-                position: "absolute", bottom: "10px", right: "10px",
-                color: "#fff", fontSize: "11px", fontWeight: "600",
-                background: "rgba(0,0,0,0.55)",
-                padding: "2px 8px", borderRadius: "6px"
-              }}>
-                {date}
-              </div>
-            </div>
+            {score}
+          </span>
+        )}
 
-            <div style={{ padding: "14px 16px", flex: 1, display: "flex", flexDirection: "column" }}>
-              <div style={{ fontSize: "13px", fontWeight: "600", color: "#fff", marginBottom: "6px", lineHeight: "1.4" }}>
-                {title}
-              </div>
-              <div style={{ fontSize: "12px", color: "#6b7280", marginBottom: "10px" }}>
-                {org}
-              </div>
+        {/* Buttons */}
+        <div style={{ display: "flex", gap: "8px", marginTop: "auto" }}>
+          <a
+            href={viewLink}
+            target="_blank"
+            rel="noreferrer"
+            style={{
+              flex: 1, textAlign: "center", textDecoration: "none",
+              padding: "9px 0",
+              fontSize: "10px", fontWeight: "700", letterSpacing: "0.1em", textTransform: "uppercase",
+              color: "var(--black)", background: "var(--yellow)",
+              transition: "background 0.2s",
+            }}
+            onMouseEnter={e => e.currentTarget.style.background = "var(--soft-white)"}
+            onMouseLeave={e => e.currentTarget.style.background = "var(--yellow)"}
+          >
+            View
+          </a>
+          <a
+            href={downloadLink}
+            download
+            target="_blank"
+            rel="noreferrer"
+            style={{
+              flex: 1, textAlign: "center", textDecoration: "none",
+              padding: "9px 0",
+              fontSize: "10px", fontWeight: "700", letterSpacing: "0.1em", textTransform: "uppercase",
+              color: "var(--muted-grey)", border: "1px solid var(--border-grey)",
+              background: "transparent",
+              transition: "all 0.2s",
+            }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = "var(--yellow)"; e.currentTarget.style.color = "var(--yellow)"; }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = "var(--border-grey)"; e.currentTarget.style.color = "var(--muted-grey)"; }}
+          >
+            Download
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+};
 
-              {score && (
-                <div style={{
-                  display: "inline-block", fontSize: "11px", fontWeight: "600",
-                  color: "#7c3aed", background: "rgba(124,58,237,0.1)",
-                  padding: "2px 10px", borderRadius: "6px", marginBottom: "12px",
-                  alignSelf: "flex-start"
-                }}>
-                  {score}
-                </div>
-              )}
+const Certificates = () => {
+  const headRef = useReveal();
 
-              <div style={{ display: "flex", gap: "8px", marginTop: "auto" }}>
-                <a
-                  href={viewLink}
-                  target="_blank"
-                  rel="noreferrer"
-                  style={{
-                    flex: 1, textAlign: "center", textDecoration: "none",
-                    padding: "8px 0", borderRadius: "8px",
-                    fontSize: "12px", fontWeight: "600",
-                    color: "#fff", background: "#7c3aed",
-                    transition: "background 0.2s"
-                  }}
-                  onMouseEnter={e => e.currentTarget.style.background = "#6d28d9"}
-                  onMouseLeave={e => e.currentTarget.style.background = "#7c3aed"}
-                >
-                  👁 View
-                </a>
+  return (
+    <section
+      style={{
+        background: "var(--black)",
+        borderTop: "1px solid var(--border-grey)",
+        padding: "clamp(60px, 8vw, 120px) clamp(20px, 6vw, 80px)",
+      }}
+    >
+      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
 
-                <a
-                  href={downloadLink}
-                  download
-                  target="_blank"
-                  rel="noreferrer"
-                  style={{
-                    flex: 1, textAlign: "center", textDecoration: "none",
-                    padding: "8px 0", borderRadius: "8px",
-                    fontSize: "12px", fontWeight: "600",
-                    color: "#7c3aed", background: "transparent",
-                    border: "1px solid #7c3aed",
-                    transition: "all 0.2s"
-                  }}
-                  onMouseEnter={e => {
-                    e.currentTarget.style.background = "rgba(124,58,237,0.15)";
-                  }}
-                  onMouseLeave={e => {
-                    e.currentTarget.style.background = "transparent";
-                  }}
-                >
-                  ⬇ Download
-                </a>
+        {/* Heading */}
+        <div ref={headRef} className="reveal" style={{ marginBottom: "clamp(40px, 5vw, 72px)" }}>
+          <span className="section-label">Certifications</span>
+          <h2
+            style={{
+              fontSize: "clamp(36px, 7vw, 100px)",
+              fontWeight: "800", letterSpacing: "-0.02em",
+              lineHeight: "1.0", fontFamily: "'Sora', sans-serif",
+              color: "var(--soft-white)",
+            }}
+          >
+            CREDENTIALS<br />
+            <span style={{ color: "var(--yellow)" }}>& PROOF.</span>
+          </h2>
+          <p
+            style={{
+              marginTop: "20px", fontSize: "clamp(13px, 1.3vw, 15px)",
+              color: "var(--muted-grey)", maxWidth: "480px",
+            }}
+          >
+            Professional credentials from IITs and global institutions
+            that validate my technical expertise.
+          </p>
+        </div>
 
-              </div>
-            </div>
-          </div>
-        ))}
+        {/* Cert Grid */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 300px), 1fr))",
+            gap: "clamp(14px, 2vw, 20px)",
+          }}
+        >
+          {certs.map((cert, i) => (
+            <CertCard key={cert.title} cert={cert} index={i} />
+          ))}
+        </div>
       </div>
     </section>
   );

@@ -1,19 +1,213 @@
-
 @import "tailwindcss";
 
+/* ===================== CSS RESET ===================== */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
+/* ===================== DESIGN TOKENS ===================== */
+:root {
+  --yellow: #F5E642;
+  --yellow-dim: #d4c726;
+  --black: #000000;
+  --deep-black: #080808;
+  --charcoal: #141414;
+  --dark-grey: #202020;
+  --mid-grey: #2a2a2a;
+  --border-grey: #333333;
+  --soft-white: #F5F5F0;
+  --muted-grey: #929292;
+  --text-dim: #666666;
+}
+
+/* ===================== BASE ===================== */
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
 html, body, #root {
   width: 100%;
   min-height: 100vh;
-  background-color: #000;
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--black);
+  color: var(--soft-white);
 }
-#root {
-  width: 100%;
-  min-height: 100vh;
+
+body {
+  font-family: 'Space Grotesk', 'Sora', 'Manrope', 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ===================== GOOGLE FONTS ===================== */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Sora:wght@300;400;600;700;800&display=swap');
+
+/* ===================== SCROLL PROGRESS ===================== */
+#scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: var(--yellow);
+  z-index: 9999;
+  transition: width 0.1s linear;
+}
+
+/* ===================== SELECTION ===================== */
+::selection {
+  background: var(--yellow);
+  color: var(--black);
+}
+
+/* ===================== SCROLLBAR ===================== */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--black); }
+::-webkit-scrollbar-thumb { background: var(--yellow); border-radius: 2px; }
+
+/* ===================== UTILITY ===================== */
+.yellow { color: var(--yellow); }
+.text-muted { color: var(--muted-grey); }
+
+.section-label {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--yellow);
+  border: 1px solid rgba(245, 230, 66, 0.3);
+  padding: 5px 14px;
+  margin-bottom: 24px;
+}
+
+/* ===================== ANIMATIONS ===================== */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes revealUp {
+  from { clip-path: inset(100% 0 0 0); transform: translateY(20px); }
+  to   { clip-path: inset(0% 0 0 0); transform: translateY(0); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-12px); }
+}
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+@keyframes pulse-yellow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(245,230,66,0.5); }
+  50%       { box-shadow: 0 0 0 8px rgba(245,230,66,0); }
+}
+
+/* ===================== SCROLL-TRIGGERED REVEAL ===================== */
+.reveal {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-50px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal-left.visible { opacity: 1; transform: translateX(0); }
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(50px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+.delay-1 { transition-delay: 0.1s; }
+.delay-2 { transition-delay: 0.2s; }
+.delay-3 { transition-delay: 0.3s; }
+.delay-4 { transition-delay: 0.4s; }
+.delay-5 { transition-delay: 0.5s; }
+.delay-6 { transition-delay: 0.6s; }
+
+/* ===================== BUTTONS ===================== */
+.btn-yellow {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--yellow); color: var(--black);
+  font-weight: 700; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 14px 32px; border: none; cursor: pointer;
+  transition: all 0.25s ease; text-decoration: none;
+}
+.btn-yellow:hover {
+  background: var(--soft-white); transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(245, 230, 66, 0.3);
+}
+
+.btn-outline {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: transparent; color: var(--soft-white);
+  font-weight: 600; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 13px 32px; border: 1px solid var(--border-grey); cursor: pointer;
+  transition: all 0.25s ease; text-decoration: none;
+}
+.btn-outline:hover { border-color: var(--yellow); color: var(--yellow); transform: translateY(-3px); }
+
+/* ===================== TICKER TAPE ===================== */
+.ticker-wrap {
+  overflow: hidden;
+  border-top: 1px solid var(--border-grey);
+  border-bottom: 1px solid var(--border-grey);
+  background: var(--charcoal);
+  padding: 12px 0;
+  white-space: nowrap;
+}
+.ticker-track {
+  display: inline-flex;
+  gap: 60px;
+  animation: ticker 30s linear infinite;
+}
+.ticker-track span { font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted-grey); }
+.ticker-track .ydot { color: var(--yellow); font-size: 8px; }
+
+/* ===================== CUSTOM CURSOR ===================== */
+.cursor-dot {
+  width: 8px; height: 8px; background: var(--yellow); border-radius: 50%;
+  position: fixed; pointer-events: none; z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s ease, height 0.3s ease;
+}
+.cursor-ring {
+  width: 36px; height: 36px; border: 1px solid rgba(245,230,66,0.5); border-radius: 50%;
+  position: fixed; pointer-events: none; z-index: 9997;
+  transform: translate(-50%, -50%);
+  transition: left 0.1s ease, top 0.1s ease, width 0.3s ease, height 0.3s ease;
+}
+
+/* ===================== PREFERS REDUCED MOTION ===================== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal, .reveal-left, .reveal-right { opacity: 1 !important; transform: none !important; }
+  html { scroll-behavior: auto; }
+}
+
+/* ===================== MOBILE ===================== */
+@media (max-width: 768px) {
+  .ticker-track { animation-duration: 20s; }
+  .cursor-dot, .cursor-ring { display: none; }
 }

@@ -1,13 +1,8 @@
-import reactLogo from "../assets/react.png";
-import nodeLogo from "../assets/node-js.png";
-import mongoLogo from "../assets/mongoDB.png";
-import expressLogo from "../assets/express.webp";
-import javaLogo from "../assets/java.png";
-import gitLogo from "../assets/social.png";
+import { useEffect, useRef } from "react";
 
 const experience = [
   {
-    icon: "🏗️",
+    num: "01",
     role: "Freelancer",
     company: "Svayambhu Developers",
     period: "Dec '25 – Jan '26",
@@ -15,7 +10,7 @@ const experience = [
     tech: ["React.js", "Tailwind CSS", "Vercel"],
   },
   {
-    icon: "🤖",
+    num: "02",
     role: "Freelancer",
     company: "Principle Pride",
     period: "Sep '25 – Nov '25",
@@ -26,214 +21,349 @@ const experience = [
 
 const education = [
   {
-    icon: "🎓",
-    level: "B.Tech (CSE)",
+    level: "B.Tech Computer Science Engineering",
     school: "Lovely Professional University",
     year: "Aug '23 – Present",
     location: "Punjab, India",
-    detail: "CGPA: 8.04"
+    detail: "CGPA: 8.04",
   },
   {
-    icon: "📖",
     level: "Class 12 — Intermediate",
     school: "SKD Academy",
     year: "Apr '22 – Mar '23",
-    location: "Vrindavan Yojna, Lucknow",
-    detail: "Percentage: 67.4%"
+    location: "Lucknow",
+    detail: "67.4%",
   },
   {
-    icon: "📚",
     level: "Class 10 — Matriculation",
     school: "SKD Academy",
     year: "Apr '20 – Mar '21",
-    location: "Vrindavan Yojna, Lucknow",
-    detail: "Percentage: 87.8%"
+    location: "Lucknow",
+    detail: "87.8%",
   },
 ];
 
 const stats = [
-  { value: "2+", label: "Freelance Projects" },
-  { value: "209+", label: "LeetCode Solved" },
-  { value: "8.04", label: "CGPA at LPU" },
-  { value: "138", label: "Max Day Streak" },
+  { value: "2+",   label: "Freelance\nProjects" },
+  { value: "209+", label: "LeetCode\nProblems" },
+  { value: "8.04", label: "CGPA\nat LPU" },
+  { value: "138",  label: "Max Day\nStreak" },
 ];
 
-const TimelineItem = ({ icon, topLabel, title, desc, tech, period, location, detail, isLast }) => (
-  <div style={{ display: "flex", gap: "18px", alignItems: "flex-start" }}>
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flexShrink: 0 }}>
-      <div style={{
-        width: "42px", height: "42px", borderRadius: "50%",
-        background: "#0d1117", border: "2px solid #7c3aed",
-        display: "flex", alignItems: "center", justifyContent: "center",
-        fontSize: "18px", zIndex: 1
-      }}>
-        {icon}
-      </div>
-      {!isLast && (
-        <div style={{
-          width: "2px", flex: 1, minHeight: "28px",
-          background: "linear-gradient(to bottom, #7c3aed44, #1e2535)",
-          marginTop: "4px"
-        }} />
-      )}
-    </div>
+/* Scroll-reveal hook */
+const useReveal = () => {
+  const ref = useRef(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { el.classList.add("visible"); obs.disconnect(); } },
+      { threshold: 0.12 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+  return ref;
+};
 
+const StatBlock = ({ value, label, delay }) => {
+  const ref = useReveal();
+  return (
     <div
+      ref={ref}
+      className={`reveal delay-${delay}`}
       style={{
-        flex: 1, background: "#0d1117", border: "1px solid #1e2535",
-        borderRadius: "14px", padding: "18px 20px",
-        marginBottom: isLast ? "0" : "16px",
-        transition: "border-color 0.25s, transform 0.25s"
-      }}
-      onMouseEnter={e => {
-        e.currentTarget.style.borderColor = "#7c3aed";
-        e.currentTarget.style.transform = "translateX(5px)";
-      }}
-      onMouseLeave={e => {
-        e.currentTarget.style.borderColor = "#1e2535";
-        e.currentTarget.style.transform = "translateX(0)";
+        borderTop: "1px solid var(--border-grey)",
+        paddingTop: "24px",
       }}
     >
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "6px" }}>
-        <span style={{ fontSize: "11px", color: "#7c3aed", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.06em" }}>
-          {topLabel}
-        </span>
-        {period && (
-          <span style={{ fontSize: "11px", color: "#6b7280", whiteSpace: "nowrap", marginLeft: "12px" }}>
-            {period}
-          </span>
-        )}
+      <div
+        style={{
+          fontSize: "clamp(36px, 5vw, 64px)", fontWeight: "800",
+          color: "var(--yellow)", letterSpacing: "-0.02em",
+          fontFamily: "'Sora', sans-serif",
+          lineHeight: 1,
+        }}
+      >
+        {value}
       </div>
-
-      <h3 style={{ fontSize: "15px", fontWeight: "700", color: "#fff", marginBottom: "6px" }}>{title}</h3>
-
-      {location && (
-        <div style={{ fontSize: "12px", color: "#6b7280", marginBottom: "8px" }}>📍 {location}</div>
-      )}
-
-      {detail && (
-        <div style={{
-          display: "inline-block", fontSize: "12px", color: "#7c3aed", fontWeight: "600",
-          background: "rgba(124,58,237,0.1)", padding: "3px 10px",
-          borderRadius: "6px", marginBottom: desc ? "10px" : "0"
-        }}>
-          {detail}
-        </div>
-      )}
-
-      {desc && (
-        <p style={{ fontSize: "13px", color: "#9ca3af", lineHeight: "1.6", marginBottom: tech ? "12px" : "0" }}>
-          {desc}
-        </p>
-      )}
-
-      {tech && (
-        <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
-          {tech.map(t => (
-            <span key={t} style={{ background: "#111827", color: "#cbd5e1", fontSize: "11px", padding: "3px 10px", borderRadius: "6px" }}>
-              {t}
-            </span>
-          ))}
-        </div>
-      )}
+      <div
+        style={{
+          fontSize: "12px", color: "var(--muted-grey)",
+          marginTop: "8px", letterSpacing: "0.06em",
+          whiteSpace: "pre-line",
+        }}
+      >
+        {label}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const About = () => {
+  const headRef   = useReveal();
+  const bioRef    = useReveal();
+  const expRef    = useReveal();
+  const eduRef    = useReveal();
+
   return (
-    <section style={{ background: "#000", color: "#fff", padding: "100px 80px" }}>
+    <>
+      {/* ===== ABOUT SECTION ===== */}
+      <section
+        id="about-section"
+        style={{
+          background: "var(--black)",
+          borderTop: "1px solid var(--border-grey)",
+          padding: "clamp(60px, 8vw, 120px) clamp(20px, 6vw, 80px)",
+        }}
+      >
+        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
 
-      {/* ABOUT ME INTRO */}
-      <div style={{ maxWidth: "1000px", margin: "0 auto 100px auto" }}>
-        <div style={{ marginBottom: "16px" }}>
-          <span style={{ fontSize: "13px", color: "#7c3aed", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.1em" }}>
-            About Me
-          </span>
-        </div>
+          {/* Section Label */}
+          <div ref={headRef} className="reveal" style={{ marginBottom: "clamp(24px, 4vw, 48px)" }}>
+            <span className="section-label">About</span>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "60px", alignItems: "center" }}>
-          <div>
-            <h2 style={{ fontSize: "36px", fontWeight: "700", lineHeight: "1.3", marginBottom: "24px" }}>
-              Passionate Engineer,<br />
-              <span style={{ color: "#7c3aed" }}>Problem Solver.</span>
+            {/* Big editorial heading */}
+            <h2
+              style={{
+                fontSize: "clamp(36px, 7vw, 100px)",
+                fontWeight: "800", letterSpacing: "-0.02em",
+                lineHeight: "1.0", fontFamily: "'Sora', sans-serif",
+                color: "var(--soft-white)",
+              }}
+            >
+              MORE THAN<br />
+              <span style={{ color: "var(--yellow)" }}>JUST</span> CODE.
             </h2>
-            <p style={{ fontSize: "15px", color: "#9ca3af", lineHeight: "1.9", marginBottom: "16px" }}>
-              Hey! I'm <span style={{ color: "#fff", fontWeight: "600" }}>Shresth Veer Singh</span>  a Computer Science Engineering student at Lovely Professional University with a CGPA of 8.04. I specialize in building full-stack web applications using the MERN stack.
-            </p>
-            <p style={{ fontSize: "15px", color: "#9ca3af", lineHeight: "1.9", marginBottom: "16px" }}>
-              I've delivered real-world projects for clients from a construction firm's business website to an AI-powered IT staffing platform combining clean UI, strong architecture, and performance-first thinking.
-            </p>
-            <p style={{ fontSize: "15px", color: "#9ca3af", lineHeight: "1.9" }}>
-              Beyond development, I actively sharpen my DSA skills on LeetCode (209+ problems solved), hold multiple NPTEL certifications from IITs, and am driven by a passion for continuous learning and building products that matter.
-            </p>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
-            {stats.map(({ value, label }) => (
-              <div
-                key={label}
+          {/* Two-column editorial layout */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: "clamp(32px, 5vw, 80px)",
+              alignItems: "flex-start",
+              marginBottom: "clamp(48px, 6vw, 100px)",
+            }}
+            className="about-grid"
+          >
+            {/* BIO */}
+            <div ref={bioRef} className="reveal-left">
+              <p
                 style={{
-                  background: "#0d1117", border: "1px solid #1e2535",
-                  borderRadius: "16px", padding: "28px 20px", textAlign: "center",
-                  transition: "border-color 0.25s, transform 0.25s"
-                }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.borderColor = "#7c3aed";
-                  e.currentTarget.style.transform = "translateY(-4px)";
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.borderColor = "#1e2535";
-                  e.currentTarget.style.transform = "translateY(0)";
+                  fontSize: "clamp(16px, 1.6vw, 20px)",
+                  lineHeight: "1.85",
+                  color: "var(--muted-grey)",
+                  marginBottom: "24px",
                 }}
               >
-                <div style={{ fontSize: "32px", fontWeight: "800", color: "#7c3aed", marginBottom: "8px" }}>{value}</div>
-                <div style={{ fontSize: "13px", color: "#9ca3af", lineHeight: "1.4" }}>{label}</div>
+                Hey! I'm{" "}
+                <span style={{ color: "var(--soft-white)", fontWeight: "700" }}>Shresth Veer Singh</span>
+                {" "}— a Computer Science Engineering student at{" "}
+                <span style={{ color: "var(--soft-white)", fontWeight: "600" }}>Lovely Professional University</span>{" "}
+                with a CGPA of{" "}
+                <span style={{ color: "var(--yellow)", fontWeight: "700" }}>8.04</span>.
+                I specialize in building full-stack applications using the MERN stack.
+              </p>
+              <p
+                style={{
+                  fontSize: "clamp(16px, 1.6vw, 20px)",
+                  lineHeight: "1.85",
+                  color: "var(--muted-grey)",
+                  marginBottom: "24px",
+                }}
+              >
+                I've delivered{" "}
+                <span style={{ color: "var(--yellow)", fontWeight: "700" }}>real-world freelance projects</span>
+                {" "}— from a construction firm's business website to an AI-powered IT staffing platform —
+                combining clean UI, strong architecture, and performance-first thinking.
+              </p>
+              <p
+                style={{
+                  fontSize: "clamp(16px, 1.6vw, 20px)",
+                  lineHeight: "1.85",
+                  color: "var(--muted-grey)",
+                }}
+              >
+                Beyond development, I actively sharpen my DSA skills on LeetCode
+                (<span style={{ color: "var(--yellow)", fontWeight: "700" }}>209+ problems solved</span>),
+                hold multiple NPTEL certifications from IITs, and am driven by a passion for
+                continuous learning and building products that matter.
+              </p>
+            </div>
+
+            {/* STATS GRID */}
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: "clamp(20px, 3vw, 40px)",
+              }}
+            >
+              {stats.map(({ value, label }, i) => (
+                <StatBlock key={label} value={value} label={label} delay={i + 1} />
+              ))}
+            </div>
+          </div>
+
+          {/* Divider */}
+          <div style={{ height: "1px", background: "var(--border-grey)", marginBottom: "clamp(48px, 6vw, 80px)" }} />
+
+          {/* ===== EXPERIENCE & EDUCATION ===== */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: "clamp(32px, 5vw, 80px)",
+            }}
+            className="about-grid"
+            id="experience"
+          >
+            {/* EXPERIENCE */}
+            <div ref={expRef} className="reveal-left">
+              <div style={{ marginBottom: "clamp(24px, 3vw, 40px)" }}>
+                <span className="section-label">Experience</span>
+                <h3
+                  style={{
+                    fontSize: "clamp(22px, 3vw, 36px)", fontWeight: "800",
+                    letterSpacing: "-0.01em", fontFamily: "'Sora', sans-serif",
+                    color: "var(--soft-white)",
+                  }}
+                >
+                  THE JOURNEY<br />
+                  <span style={{ color: "var(--yellow)" }}>SO FAR.</span>
+                </h3>
               </div>
-            ))}
+
+              <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
+                {experience.map((exp, i) => (
+                  <div
+                    key={exp.company}
+                    style={{
+                      borderTop: "1px solid var(--border-grey)",
+                      paddingTop: "clamp(16px, 2vw, 28px)",
+                      paddingBottom: "clamp(16px, 2vw, 28px)",
+                      position: "relative",
+                      transition: "padding-left 0.3s ease",
+                      cursor: "default",
+                    }}
+                    onMouseEnter={e => { e.currentTarget.style.paddingLeft = "16px"; }}
+                    onMouseLeave={e => { e.currentTarget.style.paddingLeft = "0px"; }}
+                  >
+                    <div
+                      style={{
+                        position: "absolute", left: 0, top: 0, bottom: 0,
+                        width: "2px", background: "var(--yellow)",
+                        opacity: 0, transition: "opacity 0.3s ease",
+                      }}
+                      className="exp-accent"
+                    />
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "8px" }}>
+                      <span
+                        style={{
+                          fontSize: "10px", fontWeight: "700", letterSpacing: "0.14em",
+                          color: "var(--yellow)", textTransform: "uppercase",
+                        }}
+                      >
+                        {exp.num} — {exp.role}
+                      </span>
+                      <span style={{ fontSize: "11px", color: "var(--text-dim)", whiteSpace: "nowrap" }}>
+                        {exp.period}
+                      </span>
+                    </div>
+                    <h4
+                      style={{
+                        fontSize: "clamp(16px, 1.8vw, 20px)", fontWeight: "700",
+                        color: "var(--soft-white)", marginBottom: "10px",
+                      }}
+                    >
+                      {exp.company}
+                    </h4>
+                    <p style={{ fontSize: "13px", color: "var(--muted-grey)", lineHeight: "1.7", marginBottom: "12px" }}>
+                      {exp.desc}
+                    </p>
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+                      {exp.tech.map(t => (
+                        <span
+                          key={t}
+                          style={{
+                            fontSize: "10px", fontWeight: "600", letterSpacing: "0.08em",
+                            color: "var(--muted-grey)", border: "1px solid var(--border-grey)",
+                            padding: "3px 10px", textTransform: "uppercase",
+                          }}
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* EDUCATION */}
+            <div ref={eduRef} className="reveal-right">
+              <div style={{ marginBottom: "clamp(24px, 3vw, 40px)" }}>
+                <span className="section-label">Education</span>
+                <h3
+                  style={{
+                    fontSize: "clamp(22px, 3vw, 36px)", fontWeight: "800",
+                    letterSpacing: "-0.01em", fontFamily: "'Sora', sans-serif",
+                    color: "var(--soft-white)",
+                  }}
+                >
+                  ACADEMIC<br />
+                  <span style={{ color: "var(--yellow)" }}>FOUNDATION.</span>
+                </h3>
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                {education.map((edu, i) => (
+                  <div
+                    key={edu.level}
+                    style={{
+                      borderTop: "1px solid var(--border-grey)",
+                      paddingTop: "clamp(16px, 2vw, 24px)",
+                      paddingBottom: "clamp(16px, 2vw, 24px)",
+                    }}
+                  >
+                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
+                      <span style={{ fontSize: "11px", color: "var(--yellow)", fontWeight: "700", letterSpacing: "0.1em", textTransform: "uppercase" }}>
+                        {edu.year}
+                      </span>
+                      <span
+                        style={{
+                          fontSize: "10px", fontWeight: "700",
+                          color: "var(--black)", background: "var(--yellow)",
+                          padding: "2px 10px", letterSpacing: "0.06em",
+                        }}
+                      >
+                        {edu.detail}
+                      </span>
+                    </div>
+                    <h4 style={{ fontSize: "clamp(14px, 1.6vw, 17px)", fontWeight: "700", color: "var(--soft-white)", marginBottom: "4px" }}>
+                      {edu.level}
+                    </h4>
+                    <p style={{ fontSize: "12px", color: "var(--muted-grey)" }}>
+                      {edu.school} · {edu.location}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* EXPERIENCE & EDUCATION */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "60px", maxWidth: "1000px", margin: "0 auto" }}>
-        <div>
-          <h2 style={{ fontSize: "26px", fontWeight: "700", marginBottom: "28px", borderLeft: "3px solid #7c3aed", paddingLeft: "14px" }}>
-            Experience
-          </h2>
-          {experience.map((exp, i) => (
-            <TimelineItem
-              key={exp.company}
-              icon={exp.icon}
-              topLabel={exp.role}
-              title={exp.company}
-              desc={exp.desc}
-              tech={exp.tech}
-              period={exp.period}
-              isLast={i === experience.length - 1}
-            />
-          ))}
-        </div>
-
-        <div>
-          <h2 style={{ fontSize: "26px", fontWeight: "700", marginBottom: "28px", borderLeft: "3px solid #7c3aed", paddingLeft: "14px" }}>
-            Education
-          </h2>
-          {education.map((edu, i) => (
-            <TimelineItem
-              key={edu.level}
-              icon={edu.icon}
-              topLabel={edu.level}
-              title={edu.school}
-              period={edu.year}
-              location={edu.location}
-              detail={edu.detail}
-              isLast={i === education.length - 1}
-            />
-          ))}
-        </div>
-      </div>
-    </section>
+      <style>{`
+        @media (max-width: 768px) {
+          .about-grid {
+            grid-template-columns: 1fr !important;
+          }
+        }
+      `}</style>
+    </>
   );
 };
 
