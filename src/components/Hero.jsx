@@ -231,7 +231,7 @@ const Hero = () => {
               <span style={{ fontSize: "16px" }}>→</span>
             </button>
             <a
-              href="https://drive.google.com/uc?export=download&id=1tZ7HsUupL_ntUY7iUxQSQ9v7dykntcZG"
+              href="https://drive.google.com/file/d/1_HZD2ayOi7PUAWhPmkz0ELQ_2dSRlnjF/view?usp=drive_link"
               download="Shresth_Resume.pdf"
               target="_blank"
               rel="noreferrer"
